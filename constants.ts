@@ -126,6 +126,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-30",
+    title: "Vercel Build Rescue Operation",
+    content: "實施 'Preinstall Lockfile Removal' 策略。在 package.json 中新增 preinstall script 自動刪除 package-lock.json，強制 Vercel 忽略導致 ETARGET 錯誤的舊鎖定檔。再次從 index.html 移除 importmap 以確保 React 18 環境一致性。",
+    tags: ["Hotfix", "Vercel", "npm", "System"]
+  },
+  {
+    date: "2024-05-30",
     title: "Dependency Clean Slate Protocol",
     content: "執行終極修復：1. 從 package.json 移除 @google/genai 以消除 npm ETARGET 錯誤。 2. 移除 index.html 的 importmap 防止 Vite 打包衝突。 3. AI 模組進入離線維護模式。優先確保 Vercel 部署成功。",
     tags: ["Hotfix", "Critical", "Dependency"]
@@ -255,6 +261,7 @@ Here is the system architecture you are monitoring:
 - If the user asks about installing Docker on Windows: Explain that **NO**, they do not need it. R5 handles Docker. Windows uses \`uv\` for native Python dev (which isolates dependencies via venv), and VMs for OS-level isolation. This saves significant RAM by avoiding WSL2 overhead.
 - If asked about Minecraft: Mention it is running but has "Double NAT" issues preventing external access, and plugins need config.
 - If asked about deployment issues or black screen: Explain that a common issue is \`importmap\` conflicting with Vite's build process, requiring its complete removal from \`index.html\`.
+- **Gemini Status**: Currently offline/simulated due to npm package dependency issues on Vercel.
 
 **Goal**: Assist the user in understanding this architecture. Be technical but concise.
 `;
