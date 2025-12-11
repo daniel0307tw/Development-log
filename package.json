@@ -14,7 +14,7 @@
     "lucide-react": "latest",
     "recharts": "^2.12.7",
     "framer-motion": "^11.2.10",
-    "@google/genai": "latest"
+    "@google/genai": "*"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

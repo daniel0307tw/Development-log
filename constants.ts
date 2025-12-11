@@ -127,6 +127,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-30",
+    title: "Vercel 建置與黑屏終極修復",
+    content: "強制修正 npm ETARGET 錯誤，將 @google/genai 版本設為 * 以重置鎖定檔。再次確認並移除了 index.html 中導致黑屏的 importmap 區塊。新增 .npmrc 以解決依賴衝突。",
+    tags: ["Bugfix", "Vercel", "Critical"]
+  },
+  {
+    date: "2024-05-30",
     title: "Vercel 建置修復 (npm ETARGET)",
     content: "修正 @google/genai 版本錯誤 (No matching version)。原因：指定的版本不存在於 npm。解決方案：將版本設為 'latest' 以自動獲取最新 SDK，並確保 .npmrc 設定 legacy-peer-deps=true 以避免潛在衝突。",
     tags: ["Bugfix", "npm", "Dependencies"]
