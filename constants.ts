@@ -126,6 +126,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-30",
+    title: "Dependency Lockfile Reset",
+    content: "強制變更依賴版本 (lucide-react pinned) 以解決 Vercel 仍試圖安裝舊版 @google/genai 的問題。這迫使 npm 忽略殘留的 package-lock.json 並重新計算依賴樹。AI 模組已完全離線。",
+    tags: ["Hotfix", "npm", "Lockfile"]
+  },
+  {
+    date: "2024-05-30",
     title: "Vercel Build Fix (Dependencies)",
     content: "已徹底移除 @google/genai 依賴與相關程式碼，解決 npm 安裝時找不到版本的錯誤 (ETARGET)。同時清理了 index.html 中的 importmap 殘留，確保 React 應用程式能通過 Vite 順利打包並上線。",
     tags: ["Hotfix", "Dependencies", "Cleanup"]

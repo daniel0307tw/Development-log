@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, X, Send, Cpu, Loader2, AlertTriangle } from 'lucide-react';
+import { X, Send, Loader2, AlertTriangle } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -9,7 +9,7 @@ const AiAssistant: React.FC = () => {
     {
       id: 'init',
       role: 'model',
-      text: "你好！我是你的系統架構助手。目前 AI 模組正在進行依賴庫維護，暫時無法連接到 Google Gemini。",
+      text: "系統公告：AI 助手目前處於離線維護模式。因上游依賴庫重構，暫時無法提供對話服務。",
       timestamp: new Date()
     }
   ]);
@@ -35,17 +35,17 @@ const AiAssistant: React.FC = () => {
     setInputText("");
     setIsLoading(true);
 
-    // Simulated Response for Maintenance Mode
+    // Hardcoded response for offline mode
     setTimeout(() => {
       const modelMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'model',
-        text: "⚠️ **System Alert**: AI Service is currently offline for dependency updates (npm build fix). Please check the Dashboard for real-time system status.",
+        text: "🔴 **OFFLINE**: AI module has been completely detached to resolve deployment stability issues. Please check the Dev Log for details.",
         timestamp: new Date()
       };
       setMessages(prev => [...prev, modelMsg]);
       setIsLoading(false);
-    }, 1000);
+    }, 800);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -62,7 +62,7 @@ const AiAssistant: React.FC = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-2xl z-50 flex items-center justify-center transition-colors ${isOpen ? 'bg-slate-700 text-slate-400' : 'bg-gradient-to-r from-orange-600 to-red-600 text-white'}`}
+        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-2xl z-50 flex items-center justify-center transition-colors ${isOpen ? 'bg-slate-700 text-slate-400' : 'bg-slate-600 text-white'}`}
       >
         {isOpen ? <X className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
       </motion.button>
@@ -80,14 +80,14 @@ const AiAssistant: React.FC = () => {
             {/* Header */}
             <div className="p-4 border-b border-slate-800 bg-slate-950 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="bg-orange-500/20 p-1.5 rounded-lg">
-                  <AlertTriangle className="w-5 h-5 text-orange-400" />
+                <div className="bg-slate-800 p-1.5 rounded-lg">
+                  <AlertTriangle className="w-5 h-5 text-slate-400" />
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-100 text-sm">System Architect AI</h3>
-                  <p className="text-xs text-orange-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-pulse"></span>
-                    Maintenance Mode
+                  <p className="text-xs text-slate-500 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
+                    Offline
                   </p>
                 </div>
               </div>
@@ -109,20 +109,18 @@ const AiAssistant: React.FC = () => {
                   <div
                     className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-indigo-600 text-white rounded-br-none'
-                        : 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700'
+                        ? 'bg-slate-700 text-white rounded-br-none'
+                        : 'bg-slate-800 text-slate-400 rounded-bl-none border border-slate-700 italic'
                     }`}
                   >
-                    {msg.text.split('\n').map((line, i) => (
-                      <p key={i} className={i > 0 ? "mt-1" : ""}>{line}</p>
-                    ))}
+                    {msg.text}
                   </div>
                 </div>
               ))}
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="bg-slate-800 rounded-2xl rounded-bl-none px-4 py-3 border border-slate-700">
-                    <Loader2 className="w-5 h-5 text-indigo-400 animate-spin" />
+                    <Loader2 className="w-5 h-5 text-slate-500 animate-spin" />
                   </div>
                 </div>
               )}
@@ -131,19 +129,19 @@ const AiAssistant: React.FC = () => {
 
             {/* Input */}
             <div className="p-4 bg-slate-950 border-t border-slate-800">
-              <div className="flex items-center gap-2 bg-slate-900 rounded-full border border-slate-700 px-4 py-2 focus-within:border-orange-500 transition-colors">
+              <div className="flex items-center gap-2 bg-slate-900 rounded-full border border-slate-700 px-4 py-2 opacity-50 cursor-not-allowed">
                 <input
                   type="text"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  placeholder="AI is under maintenance..."
-                  className="flex-1 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none"
+                  placeholder="Service Offline"
+                  disabled={true}
+                  className="flex-1 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none cursor-not-allowed"
                 />
                 <button
-                  onClick={handleSend}
-                  disabled={isLoading || !inputText.trim()}
-                  className="p-1.5 rounded-full bg-orange-600 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-500 transition-colors"
+                  disabled={true}
+                  className="p-1.5 rounded-full bg-slate-700 text-slate-500 cursor-not-allowed"
                 >
                   <Send className="w-4 h-4" />
                 </button>
