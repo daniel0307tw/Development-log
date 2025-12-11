@@ -16,7 +16,7 @@ export const MACHINES: MachineSpec[] = [
     os: "Ubuntu Server + CasaOS",
     isolationTech: "Docker 容器 (高密度)",
     resourceLimit: "16GB RAM Max",
-    keyProjects: ["LLM", "Minecraft", "CasaOS", "Streaming"],
+    keyProjects: ["LLM", "Minecraft", "CasaOS", "Streaming", "Whisper"],
     description: "專注於後端運算與 Docker 服務，透過 CasaOS 進行簡易管理。硬體更新為 Ryzen 3600 搭配 1060 6GB 顯卡。",
     ports: ["RJ45 1Gbps"]
   },
@@ -42,13 +42,25 @@ export const PROJECTS: ProjectSpec[] = [
     name: "LLM 語言模型",
     host: "R5 Server",
     isolation: "Docker",
-    ramAllocated: "8GB",
-    ramPercentage: 50,
+    ramAllocated: "6GB",
+    ramPercentage: 37.5,
     status: "Maintenance",
-    description: "核心資源重新規劃中，暫停運行以進行部屬調整。",
+    description: "核心資源重新規劃中，暫停運行以進行部屬調整 (釋出資源給 Whisper)。",
     color: "#10b981", // emerald-500
     techStack: ["Ollama", "Llama 3 8B", "NVIDIA CUDA"],
     port: "11434"
+  },
+  {
+    name: "Auto-Sub (Whisper)",
+    host: "R5 Server",
+    isolation: "Docker",
+    ramAllocated: "2GB",
+    ramPercentage: 12.5,
+    status: "Running",
+    description: "自動化字幕生成容器。監控資料夾 -> GTX 1060 加速辨識 -> 輸出 SRT。",
+    color: "#f43f5e", // rose-500
+    techStack: ["Python", "Faster-Whisper", "CUDA 12", "Watchdog"],
+    port: "N/A (File Watch)"
   },
   {
     name: "Minecraft 伺服器",
@@ -125,115 +137,121 @@ export const PROJECTS: ProjectSpec[] = [
 
 export const DEV_LOGS: LogEntry[] = [
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
+    title: "Auto-Sub Service Deployment (Faster-Whisper)",
+    content: "在 R5 Server 部署輕量化 Python 容器，實現影片字幕自動化。功能：1. 監控 Input 資料夾 2. 觸發 GTX 1060 執行 Faster-Whisper (CUDA 加速) 3. 自動輸出 .srt 字幕。優勢：保持 Host OS 乾淨，所有依賴封裝於 Docker。",
+    tags: ["Feature", "Docker", "AI", "Automation"]
+  },
+  {
+    date: "2025-12-11",
     title: "Project Configuration Standardization",
     content: "採用 ChatGPT 建議的標準化 package.json 配置。1. 移除 preinstall hack，回歸標準 npm 流程。 2. 確保依賴版本鎖定。 3. 同步移除 index.html 的 importmap，完成從 CDN 模式到 Vite Build 模式的完全遷移。",
     tags: ["Refactor", "Standardization", "ChatGPT"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "Vercel Build Rescue Operation",
     content: "實施 'Preinstall Lockfile Removal' 策略。在 package.json 中新增 preinstall script 自動刪除 package-lock.json，強制 Vercel 忽略導致 ETARGET 錯誤的舊鎖定檔。再次從 index.html 移除 importmap 以確保 React 18 環境一致性。",
     tags: ["Hotfix", "Vercel", "npm", "System"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "Dependency Clean Slate Protocol",
     content: "執行終極修復：1. 從 package.json 移除 @google/genai 以消除 npm ETARGET 錯誤。 2. 移除 index.html 的 importmap 防止 Vite 打包衝突。 3. AI 模組進入離線維護模式。優先確保 Vercel 部署成功。",
     tags: ["Hotfix", "Critical", "Dependency"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "Dependency & Build Fix (Final)",
     content: "成功解決 npm ETARGET 錯誤與黑屏問題。1. package.json 更新 @google/genai 至 'latest' 強制更新鎖定檔。 2. 徹底移除 index.html 的 importmap。 3. 新增 .npmrc 處理依賴衝突。AI 助手已恢復連線模式。",
     tags: ["Hotfix", "npm", "Vercel", "Success"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "Dependency Lockfile Reset",
     content: "強制變更依賴版本 (lucide-react pinned) 以解決 Vercel 仍試圖安裝舊版 @google/genai 的問題。這迫使 npm 忽略殘留的 package-lock.json 並重新計算依賴樹。AI 模組已完全離線。",
     tags: ["Hotfix", "npm", "Lockfile"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "Vercel Build Fix (Dependencies)",
     content: "已徹底移除 @google/genai 依賴與相關程式碼，解決 npm 安裝時找不到版本的錯誤 (ETARGET)。同時清理了 index.html 中的 importmap 殘留，確保 React 應用程式能通過 Vite 順利打包並上線。",
     tags: ["Hotfix", "Dependencies", "Cleanup"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "AI 模組依賴移除 (Emergency Fix)",
     content: "因 @google/genai 套件版本不穩定導致 Vercel 建置失敗 (ETARGET)。已從依賴中暫時移除該套件，並將 AI 助手切換至模擬維護模式，以優先確保儀表板能成功部署上線。",
     tags: ["Hotfix", "Dependencies", "AI"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "Vercel 建置與黑屏終極修復",
     content: "強制修正 npm ETARGET 錯誤，將 @google/genai 版本設為 * 以重置鎖定檔。再次確認並移除了 index.html 中導致黑屏的 importmap 區塊。新增 .npmrc 以解決依賴衝突。",
     tags: ["Bugfix", "Vercel", "Critical"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "Vercel 建置修復 (npm ETARGET)",
     content: "修正 @google/genai 版本錯誤 (No matching version)。原因：指定的版本不存在於 npm。解決方案：將版本設為 'latest' 以自動獲取最新 SDK，並確保 .npmrc 設定 legacy-peer-deps=true 以避免潛在衝突。",
     tags: ["Bugfix", "npm", "Dependencies"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "Vercel 建置失敗修復 (npm ERESOLVE)",
     content: "解決 npm install 時發生的依賴衝突 (lucide-react 版本不匹配)。措施：1. 新增 .npmrc 設定 legacy-peer-deps=true 強制忽略衝突。 2. 更新 package.json 將 lucide-react 設為 latest，確保相容性。",
     tags: ["Bugfix", "Vercel", "npm"]
   },
   {
-    date: "2024-05-30",
+    date: "2025-12-11",
     title: "Vercel 持續黑屏故障排除 (Importmap 衝突)",
     content: "發現部署後持續黑屏是因 index.html 中殘留 importmap 區塊所致。Vite 編譯器與 importmap 衝突，導致打包失敗或輸出無效。已徹底移除 importmap，確保 Vite 能正確打包並啟動 React 應用程式。",
     tags: ["Bugfix", "Vite", "Deployment", "Importmap"]
   },
   {
-    date: "2024-05-29",
+    date: "2025-12-11",
     title: "Vercel 建置環境修復 (Critical)",
     content: "解決部署後黑屏問題。原因：瀏覽器無法執行原始的 .tsx 檔案。解決方案：導入 Vite + TypeScript 建置流程 (新增 package.json, vite.config.ts, tsconfig.json)，讓 Vercel 在部署前自動編譯程式碼。",
     tags: ["Bugfix", "Vite", "Infrastructure"]
   },
   {
-    date: "2024-05-29",
+    date: "2025-12-11",
     title: "Vercel 黑屏故障排除 (Hotfix)",
     content: "修正 Vercel 部署後畫面全黑的問題。原因：index.html 缺少指向 index.tsx 的入口腳本 (<script type='module' src='/index.tsx'></script>)。添加後重新部署，React 應用程式應能正常掛載。",
     tags: ["Bugfix", "Vercel", "Deployment"]
   },
   {
-    date: "2024-05-29",
+    date: "2025-12-11",
     title: "Vercel 部署確認與流量監測",
     content: "前端儀表板已成功上線 (Status: Ready)。Vercel 儀表板顯示 '100 GB' 為免費額度上限，目前實際使用量極低 (KB 級別)，確認 SPA 架構極為輕量，無須擔心頻寬成本。",
     tags: ["Deployment", "Vercel", "Monitoring"]
   },
   {
-    date: "2024-05-29",
+    date: "2025-12-11",
     title: "部署作業啟動 (Deployment Start)",
     content: "確定採用 Vercel / Netlify 託管方案。已建立 vercel.json 與 netlify.toml 設定檔以支援 SPA 路由重寫。程式碼庫準備推送到 GitHub 觸發自動部署 CI/CD 流程。",
     tags: ["Deployment", "CI/CD", "Vercel"]
   },
   {
-    date: "2024-05-28",
+    date: "2025-12-11",
     title: "前端儀表板部署規劃",
     content: "評估將此系統監控儀表板 (React App) 公開的方案。方案 A (外網)：使用 Vercel/Netlify 託管，透過 GitHub 自動部署。方案 B (自架)：在 R5 CasaOS 上建立 Nginx 容器並掛載 Build 後的靜態檔，需搭配 Cloudflare Tunnel 解決雙重 NAT 問題。",
     tags: ["Deployment", "Vercel", "Self-Hosted"]
   },
   {
-    date: "2024-05-27",
+    date: "2025-12-11",
     title: "Minecraft 開服與網絡挑戰",
     content: "Minecraft 伺服器核心已穩定運行，玩家可正常登入遊玩。目前遭遇兩大問題：1. 缺乏 Residence 領地與 TPA 傳送插件的權限配置。 2. 租屋處網絡環境造成雙重 NAT (Double NAT)，導致 Port Forwarding 失效，目前正尋求內網穿透 (Tunnel) 方案解決外網連線問題。",
     tags: ["Minecraft", "Network", "Issues"]
   },
   {
-    date: "2024-05-26",
+    date: "2025-12-11",
     title: "Katana17 開發環境優化 (uv)",
     content: "在 Windows 11 本機導入 uv 進行 Python 專案管理，取代傳統 Anaconda/Pip。移除 Windows Docker Desktop 以節省 RAM，Docker 任務全數移交 R5 伺服器。",
     tags: ["Optimization", "uv", "Python"]
   },
   {
-    date: "2024-05-24",
+    date: "2025-12-11",
     title: "硬體規格更新與 CasaOS 部署",
     content: "R5 伺服器硬體更新為 Ryzen 3600 + GTX 1060 6GB。作業系統遷移至 Ubuntu Server 並安裝 CasaOS 方便管理 Docker 容器。",
     tags: ["Hardware", "CasaOS", "Ubuntu"]
@@ -248,8 +266,9 @@ Here is the system architecture you are monitoring:
    - **Hardware**: AMD Ryzen 5 3600, GTX 1060 6GB, 16GB DDR4.
    - **OS**: Ubuntu Server + CasaOS.
    - **Isolation**: Docker Containers.
-   - **Role**: Heavy lifting, stable services (LLM, Minecraft).
-   - **Current Issues**: Minecraft server has Double NAT issues (cannot port forward due to rented apartment network). LLM is currently in maintenance/planning mode.
+   - **Role**: Heavy lifting, stable services (LLM, Minecraft, Auto-Sub).
+   - **Current Issues**: Minecraft server has Double NAT issues (cannot port forward due to rented apartment network). LLM is currently in maintenance/planning mode (RAM reduced to 6GB).
+   - **New Service**: "Auto-Sub" (Faster-Whisper) container deployed for automated video subtitling using GTX 1060.
 
 2. **MSI Katana 17 B13VGK (Main Workstation)**:
    - **Hardware**: i7-13620H, RTX 4070 (8GB), 16GB DDR5.
