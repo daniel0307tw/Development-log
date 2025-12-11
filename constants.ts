@@ -1,4 +1,3 @@
-
 import { ProjectSpec, MachineSpec, LogEntry } from './types';
 
 export const MACHINES: MachineSpec[] = [
@@ -125,6 +124,12 @@ export const PROJECTS: ProjectSpec[] = [
 ];
 
 export const DEV_LOGS: LogEntry[] = [
+  {
+    date: "2024-05-30",
+    title: "AI 模組依賴移除 (Emergency Fix)",
+    content: "因 @google/genai 套件版本不穩定導致 Vercel 建置失敗 (ETARGET)。已從依賴中暫時移除該套件，並將 AI 助手切換至模擬維護模式，以優先確保儀表板能成功部署上線。",
+    tags: ["Hotfix", "Dependencies", "AI"]
+  },
   {
     date: "2024-05-30",
     title: "Vercel 建置與黑屏終極修復",

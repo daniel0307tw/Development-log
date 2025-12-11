@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
-import { MessageSquare, X, Send, Cpu, Loader2 } from 'lucide-react';
+// import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
+import { MessageSquare, X, Send, Cpu, Loader2, AlertTriangle } from 'lucide-react';
 import { SYSTEM_CONTEXT_PROMPT } from '../constants';
 import { ChatMessage } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,7 +11,7 @@ const AiAssistant: React.FC = () => {
     {
       id: 'init',
       role: 'model',
-      text: "你好！我是你的系統架構助手。我可以回答關於 **R5 Server** 和 **Katana17** 的架構、Docker 資源分配或安全性隔離的問題。",
+      text: "你好！我是你的系統架構助手。目前 AI 模組正在進行依賴庫維護，暫時無法連接到 Google Gemini。",
       timestamp: new Date()
     }
   ]);
@@ -20,11 +20,11 @@ const AiAssistant: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Initialize Gemini Client
-  // NOTE: In a real production app, you should not expose API keys on the client.
-  // This is for demonstration purposes as requested.
-  const aiRef = useRef<GoogleGenAI | null>(null);
-  const chatRef = useRef<Chat | null>(null);
+  // NOTE: GenAI disabled temporarily due to build instability with @google/genai package
+  // const aiRef = useRef<GoogleGenAI | null>(null);
+  // const chatRef = useRef<Chat | null>(null);
 
+  /*
   useEffect(() => {
     if (process.env.API_KEY) {
       aiRef.current = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -36,13 +36,14 @@ const AiAssistant: React.FC = () => {
       });
     }
   }, []);
+  */
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isOpen]);
 
   const handleSend = async () => {
-    if (!inputText.trim() || !chatRef.current) return;
+    if (!inputText.trim()) return;
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),
@@ -55,29 +56,30 @@ const AiAssistant: React.FC = () => {
     setInputText("");
     setIsLoading(true);
 
-    try {
-      const result: GenerateContentResponse = await chatRef.current.sendMessage({ message: userMsg.text });
-      const responseText = result.text || "I encountered an error generating a response.";
-
+    // Simulated Response for Maintenance Mode
+    setTimeout(() => {
       const modelMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'model',
-        text: responseText,
+        text: "⚠️ **System Alert**: AI Service is currently offline for dependency updates (npm build fix). Please check the Dashboard for real-time system status.",
         timestamp: new Date()
       };
       setMessages(prev => [...prev, modelMsg]);
+      setIsLoading(false);
+    }, 1000);
+
+    /* Original Logic
+    try {
+      if (!chatRef.current) throw new Error("AI not initialized");
+      const result: GenerateContentResponse = await chatRef.current.sendMessage({ message: userMsg.text });
+      const responseText = result.text || "I encountered an error generating a response.";
+      // ...
     } catch (error) {
-      console.error("Gemini Error:", error);
-      const errorMsg: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'model',
-        text: "Sorry, I couldn't connect to the AI model. Please check your API key configuration.",
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMsg]);
+      // ...
     } finally {
       setIsLoading(false);
     }
+    */
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -94,9 +96,9 @@ const AiAssistant: React.FC = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-2xl z-50 flex items-center justify-center transition-colors ${isOpen ? 'bg-slate-700 text-slate-400' : 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white'}`}
+        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-2xl z-50 flex items-center justify-center transition-colors ${isOpen ? 'bg-slate-700 text-slate-400' : 'bg-gradient-to-r from-orange-600 to-red-600 text-white'}`}
       >
-        <MessageSquare className="w-6 h-6" />
+        {isOpen ? <X className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
       </motion.button>
 
       {/* Chat Modal */}
@@ -112,14 +114,14 @@ const AiAssistant: React.FC = () => {
             {/* Header */}
             <div className="p-4 border-b border-slate-800 bg-slate-950 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="bg-indigo-500/20 p-1.5 rounded-lg">
-                  <Cpu className="w-5 h-5 text-indigo-400" />
+                <div className="bg-orange-500/20 p-1.5 rounded-lg">
+                  <AlertTriangle className="w-5 h-5 text-orange-400" />
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-100 text-sm">System Architect AI</h3>
-                  <p className="text-xs text-emerald-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-                    Gemini 2.5 Flash
+                  <p className="text-xs text-orange-400 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-pulse"></span>
+                    Maintenance Mode
                   </p>
                 </div>
               </div>
@@ -145,7 +147,6 @@ const AiAssistant: React.FC = () => {
                         : 'bg-slate-800 text-slate-200 rounded-bl-none border border-slate-700'
                     }`}
                   >
-                    {/* Simple Markdown rendering replacement for brevity */}
                     {msg.text.split('\n').map((line, i) => (
                       <p key={i} className={i > 0 ? "mt-1" : ""}>{line}</p>
                     ))}
@@ -164,19 +165,19 @@ const AiAssistant: React.FC = () => {
 
             {/* Input */}
             <div className="p-4 bg-slate-950 border-t border-slate-800">
-              <div className="flex items-center gap-2 bg-slate-900 rounded-full border border-slate-700 px-4 py-2 focus-within:border-indigo-500 transition-colors">
+              <div className="flex items-center gap-2 bg-slate-900 rounded-full border border-slate-700 px-4 py-2 focus-within:border-orange-500 transition-colors">
                 <input
                   type="text"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  placeholder="Ask about architecture..."
+                  placeholder="AI is under maintenance..."
                   className="flex-1 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none"
                 />
                 <button
                   onClick={handleSend}
                   disabled={isLoading || !inputText.trim()}
-                  className="p-1.5 rounded-full bg-indigo-600 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-indigo-500 transition-colors"
+                  className="p-1.5 rounded-full bg-orange-600 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-orange-500 transition-colors"
                 >
                   <Send className="w-4 h-4" />
                 </button>
