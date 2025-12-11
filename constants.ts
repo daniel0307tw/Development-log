@@ -126,6 +126,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-30",
+    title: "Dependency & Build Fix (Final)",
+    content: "成功解決 npm ETARGET 錯誤與黑屏問題。1. package.json 更新 @google/genai 至 'latest' 強制更新鎖定檔。 2. 徹底移除 index.html 的 importmap。 3. 新增 .npmrc 處理依賴衝突。AI 助手已恢復連線模式。",
+    tags: ["Hotfix", "npm", "Vercel", "Success"]
+  },
+  {
+    date: "2024-05-30",
     title: "Dependency Lockfile Reset",
     content: "強制變更依賴版本 (lucide-react pinned) 以解決 Vercel 仍試圖安裝舊版 @google/genai 的問題。這迫使 npm 忽略殘留的 package-lock.json 並重新計算依賴樹。AI 模組已完全離線。",
     tags: ["Hotfix", "npm", "Lockfile"]

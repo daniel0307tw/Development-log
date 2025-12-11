@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, Loader2, AlertTriangle } from 'lucide-react';
+import { X, Send, Loader2, Bot, AlertTriangle } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
+import { GoogleGenAI } from "@google/genai";
+import { SYSTEM_CONTEXT_PROMPT } from '../constants';
 
 const AiAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +11,7 @@ const AiAssistant: React.FC = () => {
     {
       id: 'init',
       role: 'model',
-      text: "系統公告：AI 助手目前處於離線維護模式。因上游依賴庫重構，暫時無法提供對話服務。",
+      text: "你好！我是您的系統架構助理。我可以回答關於 R5 Server、Katana17 以及目前部署狀態的問題。",
       timestamp: new Date()
     }
   ]);
@@ -35,17 +37,41 @@ const AiAssistant: React.FC = () => {
     setInputText("");
     setIsLoading(true);
 
-    // Hardcoded response for offline mode
-    setTimeout(() => {
+    try {
+      // Fix: Use process.env.API_KEY exclusively as per guidelines. 
+      // Removed import.meta.env which caused TS error.
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      
+      const response = await ai.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: inputText,
+        config: {
+          systemInstruction: SYSTEM_CONTEXT_PROMPT,
+        },
+      });
+
+      const text = response.text || "No response generated.";
+
       const modelMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'model',
-        text: "🔴 **OFFLINE**: AI module has been completely detached to resolve deployment stability issues. Please check the Dev Log for details.",
+        text: text,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, modelMsg]);
+
+    } catch (error: any) {
+      console.error("AI Error:", error);
+      const errorMsg: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        role: 'model',
+        text: `⚠️ **Error**: ${error.message || "Connection failed"}.`,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorMsg]);
+    } finally {
       setIsLoading(false);
-    }, 800);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -62,9 +88,9 @@ const AiAssistant: React.FC = () => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-2xl z-50 flex items-center justify-center transition-colors ${isOpen ? 'bg-slate-700 text-slate-400' : 'bg-slate-600 text-white'}`}
+        className={`fixed bottom-6 right-6 p-4 rounded-full shadow-2xl z-50 flex items-center justify-center transition-colors ${isOpen ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-indigo-400 hover:bg-slate-600'}`}
       >
-        {isOpen ? <X className="w-6 h-6" /> : <AlertTriangle className="w-6 h-6" />}
+        {isOpen ? <X className="w-6 h-6" /> : <Bot className="w-6 h-6" />}
       </motion.button>
 
       {/* Chat Modal */}
@@ -80,14 +106,14 @@ const AiAssistant: React.FC = () => {
             {/* Header */}
             <div className="p-4 border-b border-slate-800 bg-slate-950 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="bg-slate-800 p-1.5 rounded-lg">
-                  <AlertTriangle className="w-5 h-5 text-slate-400" />
+                <div className="bg-indigo-600 p-1.5 rounded-lg">
+                  <Bot className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-100 text-sm">System Architect AI</h3>
-                  <p className="text-xs text-slate-500 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-red-500 rounded-full"></span>
-                    Offline
+                  <p className="text-xs text-emerald-400 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
+                    Online (Gemini 2.5)
                   </p>
                 </div>
               </div>
@@ -109,8 +135,8 @@ const AiAssistant: React.FC = () => {
                   <div
                     className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
                       msg.role === 'user'
-                        ? 'bg-slate-700 text-white rounded-br-none'
-                        : 'bg-slate-800 text-slate-400 rounded-bl-none border border-slate-700 italic'
+                        ? 'bg-indigo-600 text-white rounded-br-none'
+                        : 'bg-slate-800 text-slate-300 rounded-bl-none border border-slate-700'
                     }`}
                   >
                     {msg.text}
@@ -120,7 +146,7 @@ const AiAssistant: React.FC = () => {
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="bg-slate-800 rounded-2xl rounded-bl-none px-4 py-3 border border-slate-700">
-                    <Loader2 className="w-5 h-5 text-slate-500 animate-spin" />
+                    <Loader2 className="w-5 h-5 text-indigo-400 animate-spin" />
                   </div>
                 </div>
               )}
@@ -129,19 +155,19 @@ const AiAssistant: React.FC = () => {
 
             {/* Input */}
             <div className="p-4 bg-slate-950 border-t border-slate-800">
-              <div className="flex items-center gap-2 bg-slate-900 rounded-full border border-slate-700 px-4 py-2 opacity-50 cursor-not-allowed">
+              <div className="flex items-center gap-2 bg-slate-900 rounded-full border border-slate-700 px-4 py-2 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500 transition-all">
                 <input
                   type="text"
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   onKeyDown={handleKeyPress}
-                  placeholder="Service Offline"
-                  disabled={true}
-                  className="flex-1 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none cursor-not-allowed"
+                  placeholder="Ask about system status..."
+                  className="flex-1 bg-transparent text-sm text-white placeholder-slate-500 focus:outline-none"
                 />
                 <button
-                  disabled={true}
-                  className="p-1.5 rounded-full bg-slate-700 text-slate-500 cursor-not-allowed"
+                  onClick={handleSend}
+                  disabled={!inputText.trim() || isLoading}
+                  className={`p-1.5 rounded-full transition-colors ${!inputText.trim() || isLoading ? 'text-slate-600 cursor-not-allowed' : 'bg-indigo-600 text-white hover:bg-indigo-500'}`}
                 >
                   <Send className="w-4 h-4" />
                 </button>
