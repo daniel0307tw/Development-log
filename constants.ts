@@ -127,6 +127,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-29",
+    title: "Vercel 部署確認與流量監測",
+    content: "前端儀表板已成功上線 (Status: Ready)。Vercel 儀表板顯示 '100 GB' 為免費額度上限，目前實際使用量極低 (KB 級別)，確認 SPA 架構極為輕量，無須擔心頻寬成本。",
+    tags: ["Deployment", "Vercel", "Monitoring"]
+  },
+  {
+    date: "2024-05-29",
     title: "部署作業啟動 (Deployment Start)",
     content: "確定採用 Vercel / Netlify 託管方案。已建立 vercel.json 與 netlify.toml 設定檔以支援 SPA 路由重寫。程式碼庫準備推送到 GitHub 觸發自動部署 CI/CD 流程。",
     tags: ["Deployment", "CI/CD", "Vercel"]
@@ -154,12 +160,6 @@ export const DEV_LOGS: LogEntry[] = [
     title: "硬體規格更新與 CasaOS 部署",
     content: "R5 伺服器硬體更新為 Ryzen 3600 + GTX 1060 6GB。作業系統遷移至 Ubuntu Server 並安裝 CasaOS 方便管理 Docker 容器。",
     tags: ["Hardware", "CasaOS", "Ubuntu"]
-  },
-  {
-    date: "2024-05-18",
-    title: "安全隔離架構部署",
-    content: "Katana17 部署 Whonix (匿名) 與 Kali Linux (滲透) 雙 VM 架構。確保日常開發 (uv) 與高風險操作 (VM) 的完全分離。",
-    tags: ["Security", "VM", "Kali", "Whonix"]
   }
 ];
 
@@ -182,9 +182,9 @@ Here is the system architecture you are monitoring:
    - **Role**: Daily driver, Local Dev (uv), High Security Tasks (VMs).
 
 **Deployment Status**:
-- **Hosting**: The user has selected **Vercel / Netlify** for this dashboard.
+- **Hosting**: The dashboard is LIVE on **Vercel**.
+- **Metrics**: The user might see "100 GB" in Vercel. Explain that this is the **Limit/Quota**, NOT the website size. The site is very small (<1MB).
 - **Config**: vercel.json and netlify.toml are configured.
-- **Next Steps**: Push to GitHub -> Import in Vercel/Netlify.
 
 **Critical Logic to Explain to User**:
 - If the user asks about installing Docker on Windows: Explain that **NO**, they do not need it. R5 handles Docker. Windows uses \`uv\` for native Python dev (which isolates dependencies via venv), and VMs for OS-level isolation. This saves significant RAM by avoiding WSL2 overhead.
