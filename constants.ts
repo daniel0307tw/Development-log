@@ -126,6 +126,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-30",
+    title: "Dependency Clean Slate Protocol",
+    content: "執行終極修復：1. 從 package.json 移除 @google/genai 以消除 npm ETARGET 錯誤。 2. 移除 index.html 的 importmap 防止 Vite 打包衝突。 3. AI 模組進入離線維護模式。優先確保 Vercel 部署成功。",
+    tags: ["Hotfix", "Critical", "Dependency"]
+  },
+  {
+    date: "2024-05-30",
     title: "Dependency & Build Fix (Final)",
     content: "成功解決 npm ETARGET 錯誤與黑屏問題。1. package.json 更新 @google/genai 至 'latest' 強制更新鎖定檔。 2. 徹底移除 index.html 的 importmap。 3. 新增 .npmrc 處理依賴衝突。AI 助手已恢復連線模式。",
     tags: ["Hotfix", "npm", "Vercel", "Success"]

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, Loader2, Bot, AlertTriangle } from 'lucide-react';
+import { X, Send, Loader2, Bot } from 'lucide-react';
 import { ChatMessage } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GoogleGenAI } from "@google/genai";
-import { SYSTEM_CONTEXT_PROMPT } from '../constants';
+// import { GoogleGenAI } from "@google/genai"; // Removed to fix build error
+// import { SYSTEM_CONTEXT_PROMPT } from '../constants';
 
 const AiAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +11,7 @@ const AiAssistant: React.FC = () => {
     {
       id: 'init',
       role: 'model',
-      text: "你好！我是您的系統架構助理。我可以回答關於 R5 Server、Katana17 以及目前部署狀態的問題。",
+      text: "你好！我是您的系統架構助理。目前 AI 模組正在進行依賴庫升級維護，暫時無法連線至 Gemini。",
       timestamp: new Date()
     }
   ]);
@@ -38,37 +38,19 @@ const AiAssistant: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Fix: Use process.env.API_KEY exclusively as per guidelines. 
-      // Removed import.meta.env which caused TS error.
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      // Simulation / Maintenance Mode
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: inputText,
-        config: {
-          systemInstruction: SYSTEM_CONTEXT_PROMPT,
-        },
-      });
-
-      const text = response.text || "No response generated.";
-
       const modelMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         role: 'model',
-        text: text,
+        text: "⚠️ **System Notice**: AI Module is currently offline for dependency maintenance (npm/CDN conflict resolution). Please check back later.",
         timestamp: new Date()
       };
       setMessages(prev => [...prev, modelMsg]);
 
     } catch (error: any) {
       console.error("AI Error:", error);
-      const errorMsg: ChatMessage = {
-        id: (Date.now() + 1).toString(),
-        role: 'model',
-        text: `⚠️ **Error**: ${error.message || "Connection failed"}.`,
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, errorMsg]);
     } finally {
       setIsLoading(false);
     }
@@ -106,14 +88,14 @@ const AiAssistant: React.FC = () => {
             {/* Header */}
             <div className="p-4 border-b border-slate-800 bg-slate-950 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="bg-indigo-600 p-1.5 rounded-lg">
+                <div className="bg-amber-600 p-1.5 rounded-lg">
                   <Bot className="w-5 h-5 text-white" />
                 </div>
                 <div>
                   <h3 className="font-bold text-slate-100 text-sm">System Architect AI</h3>
-                  <p className="text-xs text-emerald-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-                    Online (Gemini 2.5)
+                  <p className="text-xs text-amber-400 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-amber-400 rounded-full animate-pulse"></span>
+                    Maintenance Mode
                   </p>
                 </div>
               </div>
