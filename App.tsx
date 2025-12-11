@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Activity, Database, Shield, LayoutDashboard } from 'lucide-react';
+import { Activity, Database, Shield, LayoutDashboard, Youtube, Code } from 'lucide-react';
 import { MACHINES } from './constants';
 import ArchitectureCard from './components/ArchitectureCard';
 import ServiceStatus from './components/ServiceStatus';
@@ -48,6 +48,28 @@ function App() {
              >
                 <Shield className="w-4 h-4" /> Katana17
              </button>
+
+             {/* Divider */}
+             <div className="h-5 w-px bg-slate-800 mx-2"></div>
+
+             {/* External Links */}
+             <a 
+               href="https://www.youtube.com/watch?v=iUC7ylzgCZA&list=PLOqSIhFy8lXOY6Ba0d4Hj1wvUy9IOItt8&index=2" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-slate-700 bg-slate-900/50 hover:bg-slate-800 hover:border-red-500/50 hover:text-red-400 text-slate-400 transition-all text-xs"
+             >
+               <Youtube className="w-3.5 h-3.5" /> 實驗室作品集
+             </a>
+
+             <a 
+               href="https://www.youtube.com/watch?v=UAMKjohruZI&list=PLOqSIhFy8lXNe-xvM3Ch1T7N6dkxHeRN9" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-slate-700 bg-slate-900/50 hover:bg-slate-800 hover:border-indigo-500/50 hover:text-indigo-400 text-slate-400 transition-all text-xs"
+             >
+               <Code className="w-3.5 h-3.5" /> 開發dev
+             </a>
           </div>
         </div>
       </header>
