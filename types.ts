@@ -41,3 +41,11 @@ export interface ChatMessage {
   text: string;
   timestamp: Date;
 }
+
+export interface TodoItem {
+  id: string;
+  task: string;
+  category: 'System' | 'Minecraft' | 'Jellyfin' | 'Network';
+  priority: 'High' | 'Medium' | 'Low';
+  status: 'Pending' | 'In Progress' | 'Done';
+}

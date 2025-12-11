@@ -1,4 +1,4 @@
-import { ProjectSpec, MachineSpec, LogEntry } from './types';
+import { ProjectSpec, MachineSpec, LogEntry, TodoItem } from './types';
 
 export const MACHINES: MachineSpec[] = [
   {
@@ -137,6 +137,12 @@ export const PROJECTS: ProjectSpec[] = [
 
 export const DEV_LOGS: LogEntry[] = [
   {
+    date: "2025-12-12",
+    title: "基礎設施強化：ARP 鎖定與 Portainer 部署",
+    content: "針對網路穩定性進行優化，於路由器端設定 ARP 綁定 (Static Leasing) 鎖定 NAS IP，徹底解決重啟後 IP 飄移問題。同時在 CasaOS 底下成功部署 Portainer.io，大幅提升容器管理的可視化程度與維運效率。",
+    tags: ["Network", "Portainer", "CasaOS", "Update"]
+  },
+  {
     date: "2025-12-11",
     title: "Auto-Sub Service Deployment (Faster-Whisper)",
     content: "在 R5 Server 部署輕量化 Python 容器，實現影片字幕自動化。功能：1. 監控 Input 資料夾 2. 觸發 GTX 1060 執行 Faster-Whisper (CUDA 加速) 3. 自動輸出 .srt 字幕。優勢：保持 Host OS 乾淨，所有依賴封裝於 Docker。",
@@ -255,6 +261,51 @@ export const DEV_LOGS: LogEntry[] = [
     title: "硬體規格更新與 CasaOS 部署",
     content: "R5 伺服器硬體更新為 Ryzen 3600 + GTX 1060 6GB。作業系統遷移至 Ubuntu Server 並安裝 CasaOS 方便管理 Docker 容器。",
     tags: ["Hardware", "CasaOS", "Ubuntu"]
+  }
+];
+
+export const TODO_ITEMS: TodoItem[] = [
+  {
+    id: '1',
+    task: '解決雙 NAS 架構問題',
+    category: 'System',
+    priority: 'High',
+    status: 'Pending'
+  },
+  {
+    id: '2',
+    task: '調整 Minecraft Server 玩家權限問題',
+    category: 'Minecraft',
+    priority: 'High',
+    status: 'Pending'
+  },
+  {
+    id: '3',
+    task: '建立 Minecraft Server 大廳、官方交易商店 (遊戲幣)',
+    category: 'Minecraft',
+    priority: 'Medium',
+    status: 'Pending'
+  },
+  {
+    id: '4',
+    task: '新增 Minecraft Server 職業插件',
+    category: 'Minecraft',
+    priority: 'Low',
+    status: 'Pending'
+  },
+  {
+    id: '5',
+    task: '維修 Jellyfin 字幕與時間軸對不上的錯誤問題',
+    category: 'Jellyfin',
+    priority: 'Medium',
+    status: 'Pending'
+  },
+  {
+    id: '6',
+    task: '補全 Jellyfin 影片語言以及字幕',
+    category: 'Jellyfin',
+    priority: 'Low',
+    status: 'Pending'
   }
 ];
 

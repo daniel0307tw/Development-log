@@ -5,6 +5,7 @@ import ArchitectureCard from './components/ArchitectureCard';
 import ServiceStatus from './components/ServiceStatus';
 import RamChart from './components/RamChart';
 import DevLog from './components/DevLog';
+import TodoList from './components/TodoList';
 import AiAssistant from './components/AiAssistant';
 import MachineDetail from './components/MachineDetail';
 
@@ -114,27 +115,30 @@ function App() {
 
             </section>
 
-            {/* Dev Logs & Info */}
+            {/* Dev Logs & Todo List */}
             <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <DevLog />
-              <div className="bg-gradient-to-br from-indigo-900/20 to-slate-900 border border-indigo-500/20 rounded-xl p-8 flex flex-col justify-center items-start">
-                  <h3 className="text-2xl font-bold text-white mb-4">隔離與安全性優勢</h3>
-                  <ul className="space-y-4 text-slate-300">
-                    <li className="flex gap-3">
-                      <Shield className="w-6 h-6 text-amber-500 flex-shrink-0" />
-                      <div>
-                        <strong className="text-slate-100 block mb-1">Whonix 獨立核心</strong>
-                        Whonix VM 擁有自己的作業系統核心，與 Host OS 完全隔離。即使 Whonix 內發生核心漏洞，也難以逃逸影響 Host。
-                      </div>
-                    </li>
-                    <li className="flex gap-3">
-                      <Database className="w-6 h-6 text-emerald-500 flex-shrink-0" />
-                      <div>
-                        <strong className="text-slate-100 block mb-1">Docker 資源效率</strong>
-                        R5 選擇 Docker 而非 VM，大幅降低了 OS Overhead，讓 16GB RAM 能跑滿 LLM 與 Minecraft 等重度應用。
-                      </div>
-                    </li>
-                  </ul>
+              <div className="flex flex-col gap-6">
+                 <TodoList />
+                 <div className="bg-gradient-to-br from-indigo-900/20 to-slate-900 border border-indigo-500/20 rounded-xl p-8 flex flex-col justify-center items-start flex-1">
+                    <h3 className="text-2xl font-bold text-white mb-4">隔離與安全性優勢</h3>
+                    <ul className="space-y-4 text-slate-300">
+                      <li className="flex gap-3">
+                        <Shield className="w-6 h-6 text-amber-500 flex-shrink-0" />
+                        <div>
+                          <strong className="text-slate-100 block mb-1">Whonix 獨立核心</strong>
+                          Whonix VM 擁有自己的作業系統核心，與 Host OS 完全隔離。即使 Whonix 內發生核心漏洞，也難以逃逸影響 Host。
+                        </div>
+                      </li>
+                      <li className="flex gap-3">
+                        <Database className="w-6 h-6 text-emerald-500 flex-shrink-0" />
+                        <div>
+                          <strong className="text-slate-100 block mb-1">Docker 資源效率</strong>
+                          R5 選擇 Docker 而非 VM，大幅降低了 OS Overhead，讓 16GB RAM 能跑滿 LLM 與 Minecraft 等重度應用。
+                        </div>
+                      </li>
+                    </ul>
+                </div>
               </div>
             </section>
           </>
