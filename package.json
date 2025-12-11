@@ -1,7 +1,7 @@
 {
   "name": "system-arch-dashboard",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,18 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "lucide-react": "^0.344.0",
-    "recharts": "^2.12.2",
-    "framer-motion": "^11.0.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "latest",
+    "recharts": "^2.12.7",
+    "framer-motion": "^11.2.10",
     "@google/genai": "^0.1.1"
   },
   "devDependencies": {
-    "@types/react": "^18.2.64",
-    "@types/react-dom": "^18.2.21",
-    "@vitejs/plugin-react": "^4.2.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.1.6"
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
   }
 }

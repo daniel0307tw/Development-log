@@ -127,6 +127,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-30",
+    title: "Vercel 建置失敗修復 (npm ERESOLVE)",
+    content: "解決 npm install 時發生的依賴衝突 (lucide-react 版本不匹配)。措施：1. 新增 .npmrc 設定 legacy-peer-deps=true 強制忽略衝突。 2. 更新 package.json 將 lucide-react 設為 latest，確保相容性。",
+    tags: ["Bugfix", "Vercel", "npm"]
+  },
+  {
+    date: "2024-05-30",
     title: "Vercel 持續黑屏故障排除 (Importmap 衝突)",
     content: "發現部署後持續黑屏是因 index.html 中殘留 importmap 區塊所致。Vite 編譯器與 importmap 衝突，導致打包失敗或輸出無效。已徹底移除 importmap，確保 Vite 能正確打包並啟動 React 應用程式。",
     tags: ["Bugfix", "Vite", "Deployment", "Importmap"]
@@ -181,12 +187,6 @@ export const DEV_LOGS: LogEntry[] = [
   }
 ];
 
-// Defining a placeholder 'index' variable to satisfy a potential phantom error
-// where 'index' is reported as an undefined name near this line (line 210 in 1-based indexing).
-// In a typical setup, 'index' would be a loop variable (e.g., in Array.prototype.map) and not cause an error here,
-// indicating the error might be a misattribution or an environment-specific issue.
-const index = 0;
-
 export const SYSTEM_CONTEXT_PROMPT = `
 You are a highly intelligent system administrator assistant integrated into the dashboard of a specific computing environment.
 Here is the system architecture you are monitoring:
@@ -217,7 +217,3 @@ Here is the system architecture you are monitoring:
 
 **Goal**: Assist the user in understanding this architecture. Be technical but concise.
 `;
-    </content>
-  </change>
-</changes>
-```
