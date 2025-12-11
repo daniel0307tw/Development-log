@@ -127,6 +127,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-29",
+    title: "Vercel 建置環境修復 (Critical)",
+    content: "解決部署後黑屏問題。原因：瀏覽器無法執行原始的 .tsx 檔案。解決方案：導入 Vite + TypeScript 建置流程 (新增 package.json, vite.config.ts, tsconfig.json)，讓 Vercel 在部署前自動編譯程式碼。",
+    tags: ["Bugfix", "Vite", "Infrastructure"]
+  },
+  {
+    date: "2024-05-29",
     title: "Vercel 黑屏故障排除 (Hotfix)",
     content: "修正 Vercel 部署後畫面全黑的問題。原因：index.html 缺少指向 index.tsx 的入口腳本 (<script type='module' src='/index.tsx'></script>)。添加後重新部署，React 應用程式應能正常掛載。",
     tags: ["Bugfix", "Vercel", "Deployment"]
