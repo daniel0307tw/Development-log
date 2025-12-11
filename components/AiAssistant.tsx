@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-// import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 import { MessageSquare, X, Send, Cpu, Loader2, AlertTriangle } from 'lucide-react';
-import { SYSTEM_CONTEXT_PROMPT } from '../constants';
 import { ChatMessage } from '../types';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -18,25 +16,6 @@ const AiAssistant: React.FC = () => {
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Initialize Gemini Client
-  // NOTE: GenAI disabled temporarily due to build instability with @google/genai package
-  // const aiRef = useRef<GoogleGenAI | null>(null);
-  // const chatRef = useRef<Chat | null>(null);
-
-  /*
-  useEffect(() => {
-    if (process.env.API_KEY) {
-      aiRef.current = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      chatRef.current = aiRef.current.chats.create({
-        model: 'gemini-2.5-flash',
-        config: {
-          systemInstruction: SYSTEM_CONTEXT_PROMPT,
-        },
-      });
-    }
-  }, []);
-  */
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -67,19 +46,6 @@ const AiAssistant: React.FC = () => {
       setMessages(prev => [...prev, modelMsg]);
       setIsLoading(false);
     }, 1000);
-
-    /* Original Logic
-    try {
-      if (!chatRef.current) throw new Error("AI not initialized");
-      const result: GenerateContentResponse = await chatRef.current.sendMessage({ message: userMsg.text });
-      const responseText = result.text || "I encountered an error generating a response.";
-      // ...
-    } catch (error) {
-      // ...
-    } finally {
-      setIsLoading(false);
-    }
-    */
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

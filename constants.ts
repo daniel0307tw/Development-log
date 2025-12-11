@@ -126,6 +126,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-30",
+    title: "Vercel Build Fix (Dependencies)",
+    content: "已徹底移除 @google/genai 依賴與相關程式碼，解決 npm 安裝時找不到版本的錯誤 (ETARGET)。同時清理了 index.html 中的 importmap 殘留，確保 React 應用程式能通過 Vite 順利打包並上線。",
+    tags: ["Hotfix", "Dependencies", "Cleanup"]
+  },
+  {
+    date: "2024-05-30",
     title: "AI 模組依賴移除 (Emergency Fix)",
     content: "因 @google/genai 套件版本不穩定導致 Vercel 建置失敗 (ETARGET)。已從依賴中暫時移除該套件，並將 AI 助手切換至模擬維護模式，以優先確保儀表板能成功部署上線。",
     tags: ["Hotfix", "Dependencies", "AI"]
