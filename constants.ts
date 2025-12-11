@@ -127,6 +127,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-29",
+    title: "Vercel 黑屏故障排除 (Hotfix)",
+    content: "修正 Vercel 部署後畫面全黑的問題。原因：index.html 缺少指向 index.tsx 的入口腳本 (<script type='module' src='/index.tsx'></script>)。添加後重新部署，React 應用程式應能正常掛載。",
+    tags: ["Bugfix", "Vercel", "Deployment"]
+  },
+  {
+    date: "2024-05-29",
     title: "Vercel 部署確認與流量監測",
     content: "前端儀表板已成功上線 (Status: Ready)。Vercel 儀表板顯示 '100 GB' 為免費額度上限，目前實際使用量極低 (KB 級別)，確認 SPA 架構極為輕量，無須擔心頻寬成本。",
     tags: ["Deployment", "Vercel", "Monitoring"]
