@@ -127,6 +127,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-30",
+    title: "Vercel 建置修復 (npm ETARGET)",
+    content: "修正 @google/genai 版本錯誤 (No matching version)。原因：指定的版本不存在於 npm。解決方案：將版本設為 'latest' 以自動獲取最新 SDK，並確保 .npmrc 設定 legacy-peer-deps=true 以避免潛在衝突。",
+    tags: ["Bugfix", "npm", "Dependencies"]
+  },
+  {
+    date: "2024-05-30",
     title: "Vercel 建置失敗修復 (npm ERESOLVE)",
     content: "解決 npm install 時發生的依賴衝突 (lucide-react 版本不匹配)。措施：1. 新增 .npmrc 設定 legacy-peer-deps=true 強制忽略衝突。 2. 更新 package.json 將 lucide-react 設為 latest，確保相容性。",
     tags: ["Bugfix", "Vercel", "npm"]
