@@ -1,0 +1,5 @@
+{
+  "name": "System Arch Dashboard",
+  "description": "A dashboard visualizing R5 Server and Katana17 architecture with integrated Gemini AI assistant.",
+  "requestFramePermissions": []
+}
