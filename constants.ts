@@ -126,6 +126,12 @@ export const PROJECTS: ProjectSpec[] = [
 export const DEV_LOGS: LogEntry[] = [
   {
     date: "2024-05-30",
+    title: "Project Configuration Standardization",
+    content: "採用 ChatGPT 建議的標準化 package.json 配置。1. 移除 preinstall hack，回歸標準 npm 流程。 2. 確保依賴版本鎖定。 3. 同步移除 index.html 的 importmap，完成從 CDN 模式到 Vite Build 模式的完全遷移。",
+    tags: ["Refactor", "Standardization", "ChatGPT"]
+  },
+  {
+    date: "2024-05-30",
     title: "Vercel Build Rescue Operation",
     content: "實施 'Preinstall Lockfile Removal' 策略。在 package.json 中新增 preinstall script 自動刪除 package-lock.json，強制 Vercel 忽略導致 ETARGET 錯誤的舊鎖定檔。再次從 index.html 移除 importmap 以確保 React 18 環境一致性。",
     tags: ["Hotfix", "Vercel", "npm", "System"]
