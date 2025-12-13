@@ -272,13 +272,6 @@ export const DEV_LOGS: LogEntry[] = [
 
 export const TODO_ITEMS: TodoItem[] = [
   {
-    id: '1',
-    task: '解決雙 NAS 架構問題 (Tailscale)',
-    category: 'System',
-    priority: 'High',
-    status: 'Done'
-  },
-  {
     id: '2',
     task: '調整 Minecraft Server 玩家權限問題',
     category: 'Minecraft',
