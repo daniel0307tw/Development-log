@@ -56,8 +56,8 @@ export const PROJECTS: ProjectSpec[] = [
     isolation: "Docker",
     ramAllocated: "2GB",
     ramPercentage: 12.5,
-    status: "Running",
-    description: "自動化字幕生成容器。監控資料夾 -> GTX 1060 加速辨識 -> 輸出 SRT。",
+    status: "Maintenance",
+    description: "服務暫停維護中。待修正監控邏輯與字幕輸出格式。",
     color: "#f43f5e", // rose-500
     techStack: ["Python", "Faster-Whisper", "CUDA 12", "Watchdog"],
     port: "N/A (File Watch)"
@@ -68,22 +68,22 @@ export const PROJECTS: ProjectSpec[] = [
     isolation: "Docker",
     ramAllocated: "4GB",
     ramPercentage: 25,
-    status: "Running",
-    description: "已開服可遊玩。待解決：插件權限配置(TPA/領地) 與 雙重 NAT 外網連線問題。",
+    status: "Stopped",
+    description: "伺服器目前關閉。待解決插件權限與網絡問題後重啟。",
     color: "#3b82f6", // blue-500
     techStack: ["Java 17", "PaperMC", "Docker Compose"],
     port: "25565"
   },
   {
-    name: "串流/CasaOS",
+    name: "串流/CasaOS (Jellyfin)",
     host: "R5 Server",
     isolation: "Docker",
     ramAllocated: "1GB",
     ramPercentage: 6.25,
     status: "Running",
-    description: "串流服務與 CasaOS 界面，輕量化部署。",
+    description: "Jellyfin 已配置強制 GPU 解碼，4K 播放順暢。目前正處理部分片源字幕缺失問題。",
     color: "#8b5cf6", // violet-500
-    techStack: ["CasaOS UI", "Nginx", "FFmpeg"],
+    techStack: ["CasaOS UI", "Nginx", "FFmpeg", "NVENC"],
     port: "80 / 443"
   },
   {
@@ -136,6 +136,12 @@ export const PROJECTS: ProjectSpec[] = [
 ];
 
 export const DEV_LOGS: LogEntry[] = [
+  {
+    date: "2025-12-13",
+    title: "Tailscale 整合與 Jellyfin 4K 解碼優化",
+    content: "重大進展：1. 透過 Tailscale Mesh Network 成功打通雙 NAS 架構，解決了內網穿透難題。 2. Jellyfin 完成轉碼設定優化，強制啟用 GPU (NVENC) 解碼，實測 4K 高碼率影片播放順暢。 3. Minecraft 伺服器暫時關閉，Auto-Sub 進入維護模式，優先處理媒體服務字幕缺失問題。",
+    tags: ["Network", "Tailscale", "Jellyfin", "GPU"]
+  },
   {
     date: "2025-12-12",
     title: "基礎設施強化：ARP 鎖定與 Portainer 部署",
@@ -267,10 +273,10 @@ export const DEV_LOGS: LogEntry[] = [
 export const TODO_ITEMS: TodoItem[] = [
   {
     id: '1',
-    task: '解決雙 NAS 架構問題',
+    task: '解決雙 NAS 架構問題 (Tailscale)',
     category: 'System',
     priority: 'High',
-    status: 'Pending'
+    status: 'Done'
   },
   {
     id: '2',
@@ -298,7 +304,7 @@ export const TODO_ITEMS: TodoItem[] = [
     task: '維修 Jellyfin 字幕與時間軸對不上的錯誤問題',
     category: 'Jellyfin',
     priority: 'Medium',
-    status: 'Pending'
+    status: 'In Progress'
   },
   {
     id: '6',
