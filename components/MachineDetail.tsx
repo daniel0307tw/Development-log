@@ -1,8 +1,9 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowLeft, Cpu, Layers, HardDrive, Box, Shield, Server, Network } from 'lucide-react';
 import { MACHINES, PROJECTS } from '../constants';
+import { ProjectSpec } from '../types';
 import ArchitectureCard from './ArchitectureCard';
+import ProjectDetailModal from './ProjectDetailModal';
 
 interface Props {
   machineId: string;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const MachineDetail: React.FC<Props> = ({ machineId, onBack }) => {
+  const [selectedProject, setSelectedProject] = useState<ProjectSpec | null>(null);
+
   const machine = MACHINES.find(m => m.id === machineId);
   const projects = PROJECTS.filter(p => {
     if (machineId === 'r5') return p.host === 'R5 Server';
@@ -120,12 +123,16 @@ const MachineDetail: React.FC<Props> = ({ machineId, onBack }) => {
 
                  {/* Layer 3: Application Layer (Grid) */}
                  <div className="pt-4">
-                    <span className="text-xs font-bold text-slate-500 uppercase mb-3 block pl-16">Layer 3: Active Projects / Services</span>
+                    <span className="text-xs font-bold text-slate-500 uppercase mb-3 block pl-16">Layer 3: Active Projects / Services (Click for Details)</span>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-12">
                        {projects.map(project => (
-                         <div key={project.name} className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4 hover:border-slate-600 transition-colors">
+                         <div 
+                           key={project.name} 
+                           onClick={() => setSelectedProject(project)}
+                           className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-4 hover:border-slate-500 hover:bg-slate-800/60 transition-all cursor-pointer group shadow-lg"
+                         >
                             <div className="flex justify-between items-start mb-2">
-                               <h4 className="font-bold text-slate-200" style={{ color: project.color }}>{project.name}</h4>
+                               <h4 className="font-bold text-slate-200 group-hover:text-white transition-colors" style={{ color: project.color }}>{project.name}</h4>
                                <span className={`text-[10px] px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-700`}>
                                   RAM: {project.ramAllocated}
                                </span>
@@ -141,11 +148,14 @@ const MachineDetail: React.FC<Props> = ({ machineId, onBack }) => {
                                ))}
                             </div>
 
-                            <div className="flex items-center gap-2 pt-2 border-t border-slate-700/50 mt-auto">
-                               <div className={`w-2 h-2 rounded-full ${getStatusDotColor(project.status)}`}></div>
-                               <span className="text-xs text-slate-400 font-mono">
-                                  {project.port && project.port !== 'N/A (Isolated)' ? `Port: ${project.port}` : project.status}
-                               </span>
+                            <div className="flex items-center justify-between pt-2 border-t border-slate-700/50 mt-auto">
+                               <div className="flex items-center gap-2">
+                                  <div className={`w-2 h-2 rounded-full ${getStatusDotColor(project.status)}`}></div>
+                                  <span className="text-xs text-slate-400 font-mono">
+                                     {project.port && project.port !== 'N/A (Isolated)' ? `Port: ${project.port}` : project.status}
+                                  </span>
+                               </div>
+                               <span className="text-[10px] text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity font-medium">View Arch &rarr;</span>
                             </div>
                          </div>
                        ))}
@@ -157,6 +167,13 @@ const MachineDetail: React.FC<Props> = ({ machineId, onBack }) => {
 
         </div>
       </div>
+
+      {selectedProject && (
+        <ProjectDetailModal 
+          project={selectedProject} 
+          onClose={() => setSelectedProject(null)} 
+        />
+      )}
     </div>
   );
 };

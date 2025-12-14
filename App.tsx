@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Activity, Database, Shield, LayoutDashboard, Youtube, Code } from 'lucide-react';
+import { Activity, Database, Shield, LayoutDashboard, Youtube, Code, GraduationCap } from 'lucide-react';
 import { MACHINES } from './constants';
 import ArchitectureCard from './components/ArchitectureCard';
 import ServiceStatus from './components/ServiceStatus';
@@ -8,8 +8,9 @@ import DevLog from './components/DevLog';
 import TodoList from './components/TodoList';
 import AiAssistant from './components/AiAssistant';
 import MachineDetail from './components/MachineDetail';
+import FinalProjectView from './components/FinalProjectView';
 
-type ViewState = 'dashboard' | 'r5' | 'katana17';
+type ViewState = 'dashboard' | 'r5' | 'katana17' | 'finalProject';
 
 function App() {
   const [currentView, setCurrentView] = useState<ViewState>('dashboard');
@@ -48,6 +49,12 @@ function App() {
                 className={`flex items-center gap-2 transition-colors ${currentView === 'katana17' ? 'text-amber-400' : 'text-slate-400 hover:text-amber-300'}`}
              >
                 <Shield className="w-4 h-4" /> Katana17
+             </button>
+             <button 
+                onClick={() => setCurrentView('finalProject')}
+                className={`flex items-center gap-2 transition-colors ${currentView === 'finalProject' ? 'text-cyan-400' : 'text-slate-400 hover:text-cyan-300'}`}
+             >
+                <GraduationCap className="w-4 h-4" /> 專題開發
              </button>
 
              {/* Divider */}
@@ -142,6 +149,8 @@ function App() {
               </div>
             </section>
           </>
+        ) : currentView === 'finalProject' ? (
+           <FinalProjectView onBack={() => setCurrentView('dashboard')} />
         ) : (
           <MachineDetail 
             machineId={currentView} 

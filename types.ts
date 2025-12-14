@@ -1,4 +1,5 @@
 
+
 export interface ProjectSpec {
   name: string;
   host: 'R5 Server' | 'Katana17';
@@ -45,7 +46,15 @@ export interface ChatMessage {
 export interface TodoItem {
   id: string;
   task: string;
-  category: 'System' | 'Minecraft' | 'Jellyfin' | 'Network';
+  category: 'System' | 'Minecraft' | 'Jellyfin' | 'Network' | 'Frontend' | 'Backend' | 'AI Model';
   priority: 'High' | 'Medium' | 'Low';
   status: 'Pending' | 'In Progress' | 'Done';
+}
+
+export interface ComponentNode {
+  id: string;
+  label: string;
+  type: 'signal' | 'ui' | 'power';
+  description: string;
+  circuitDetails?: string; // Placeholder for future image/diagram URL
 }

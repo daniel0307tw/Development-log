@@ -1,8 +1,14 @@
 import React from 'react';
 import { TODO_ITEMS } from '../constants';
+import { TodoItem } from '../types';
 import { CheckSquare, ArrowUpCircle, MinusCircle, ArrowDownCircle } from 'lucide-react';
 
-const TodoList: React.FC = () => {
+interface Props {
+  todos?: TodoItem[];
+  title?: string;
+}
+
+const TodoList: React.FC<Props> = ({ todos = TODO_ITEMS, title = "待辦事項 (Todo List)" }) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'High': return 'text-red-400 bg-red-950/30 border-red-900/50';
@@ -17,6 +23,9 @@ const TodoList: React.FC = () => {
        case 'Minecraft': return 'text-emerald-400';
        case 'Jellyfin': return 'text-purple-400';
        case 'System': return 'text-slate-400';
+       case 'Frontend': return 'text-cyan-400';
+       case 'Backend': return 'text-green-400';
+       case 'AI Model': return 'text-pink-400';
        default: return 'text-indigo-400';
      }
   };
@@ -26,15 +35,15 @@ const TodoList: React.FC = () => {
        <div className="flex items-center justify-between mb-6 flex-shrink-0">
         <h3 className="text-xl font-bold text-white flex items-center gap-2">
           <CheckSquare className="w-5 h-5 text-indigo-400" />
-          待辦事項 (Todo List)
+          {title}
         </h3>
         <span className="text-xs font-mono text-slate-500 bg-slate-800/50 px-2 py-1 rounded">
-          {TODO_ITEMS.length} Tasks
+          {todos.length} Tasks
         </span>
       </div>
 
       <div className="space-y-3 overflow-y-auto scrollbar-thin pr-2 max-h-[400px]">
-        {TODO_ITEMS.map((item) => (
+        {todos.map((item) => (
           <div key={item.id} className="p-3 rounded-lg bg-slate-950/50 border border-slate-800 hover:border-slate-700 transition-colors group">
              <div className="flex items-start gap-3">
                 <div className="mt-1 flex-shrink-0">

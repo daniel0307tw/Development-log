@@ -1,4 +1,4 @@
-import { ProjectSpec, MachineSpec, LogEntry, TodoItem } from './types';
+import { ProjectSpec, MachineSpec, LogEntry, TodoItem, ComponentNode } from './types';
 
 export const MACHINES: MachineSpec[] = [
   {
@@ -272,17 +272,24 @@ export const DEV_LOGS: LogEntry[] = [
 
 export const TODO_ITEMS: TodoItem[] = [
   {
+    id: '5',
+    task: '維修 Jellyfin 字幕與時間軸對不上的錯誤問題',
+    category: 'Jellyfin',
+    priority: 'Medium',
+    status: 'In Progress'
+  },
+  {
     id: '2',
     task: '調整 Minecraft Server 玩家權限問題',
     category: 'Minecraft',
-    priority: 'High',
+    priority: 'Low',
     status: 'Pending'
   },
   {
     id: '3',
     task: '建立 Minecraft Server 大廳、官方交易商店 (遊戲幣)',
     category: 'Minecraft',
-    priority: 'Medium',
+    priority: 'Low',
     status: 'Pending'
   },
   {
@@ -293,13 +300,6 @@ export const TODO_ITEMS: TodoItem[] = [
     status: 'Pending'
   },
   {
-    id: '5',
-    task: '維修 Jellyfin 字幕與時間軸對不上的錯誤問題',
-    category: 'Jellyfin',
-    priority: 'Medium',
-    status: 'In Progress'
-  },
-  {
     id: '6',
     task: '補全 Jellyfin 影片語言以及字幕',
     category: 'Jellyfin',
@@ -307,6 +307,148 @@ export const TODO_ITEMS: TodoItem[] = [
     status: 'Pending'
   }
 ];
+
+// --- Final Project Specific Data ---
+
+export const FINAL_PROJECT_LOGS: LogEntry[] = [
+  {
+    date: "2025-01-05",
+    title: "CHAOS CAN 架構確認 (無 APC)",
+    content: "與老師討論後，確認專題方向轉向互動式音效裝置 'CHAOS CAN'。確認不使用 APC 架構，將專注於實作純類比 Fuzz 破音電路，並透過光敏電阻進行直覺式參數控制。",
+    tags: ["Concept", "Analog", "Fuzz", "No-APC"]
+  },
+  {
+    date: "2025-01-02",
+    title: "BJT Fuzz 電路模擬",
+    content: "在 LTSpice 中模擬了基於 BJT 電晶體的 Fuzz 電路，調整 Bias 點以獲得理想的破音波形。下一步是採購 2N3904 或 BC547 電晶體進行麵包板測試。",
+    tags: ["Simulation", "Circuit", "LTSpice"]
+  }
+];
+
+export const FINAL_PROJECT_TODOS: TodoItem[] = [
+  {
+    id: 'fp-4',
+    task: '研究美秀集團炫泡 (確認放棄 APC 方向)',
+    category: 'System',
+    priority: 'High',
+    status: 'Done'
+  },
+  {
+    id: 'fp-5',
+    task: '採購 BJT Fuzz 核心元件 (電晶體, 電容, VR)',
+    category: 'System', // Using 'System' as proxy for Hardware
+    priority: 'High',
+    status: 'Pending'
+  },
+  {
+    id: 'fp-6',
+    task: '設計 CHAOS CAN 外殼與 3D 列印圖',
+    category: 'Frontend', // Using 'Frontend' as proxy for Design
+    priority: 'Medium',
+    status: 'Pending'
+  },
+  {
+    id: 'fp-3',
+    task: '撰寫專題論文初稿 (Ch1: 動機與背景)',
+    category: 'System',
+    priority: 'Medium',
+    status: 'Pending'
+  }
+];
+
+export const CHAOS_NODES: Record<string, ComponentNode> = {
+  'input-jack': {
+    id: 'input-jack',
+    label: '吉他輸入 Input Jack',
+    type: 'signal',
+    description: '6.3mm TS Phone Jack。接收來自吉他拾音器的高阻抗微弱訊號 (約 100mV - 1V 峰值)。',
+    circuitDetails: '標準 Mono Jack 接法：Tip 接訊號，Sleeve 接地。'
+  },
+  'cin': {
+    id: 'cin',
+    label: '輸入耦合電容 Cin',
+    type: 'signal',
+    description: '阻隔直流，僅讓交流音訊通過。此電容數值決定了進入電路的低頻量 (High-pass filter)。',
+    circuitDetails: '數值通常在 0.1uF 到 10uF 之間。數值越大，低頻越多 (Fuzz 越肥厚)。'
+  },
+  'bjt-fuzz': {
+    id: 'bjt-fuzz',
+    label: 'BJT Fuzz 核心電路',
+    type: 'signal',
+    description: '利用雙極性接面電晶體 (BJT) 的過載放大特性產生方波截波失真 (Clipping)。',
+    circuitDetails: '常見架構：Common Emitter Amplifier。利用高增益讓訊號撞擊電源軌 (Vcc) 與地 (GND) 產生破音。關鍵元件：Q1 (NPN Transistor)。'
+  },
+  'volume': {
+    id: 'volume',
+    label: '音量/輸出電路',
+    type: 'signal',
+    description: '控制最終輸出的訊號震幅。通常使用對數型 (Log / Audio Taper) 可變電阻。',
+    circuitDetails: '100k - 500k VR。Output 來自 VR 的 Wiper 端。'
+  },
+  '3pdt': {
+    id: '3pdt',
+    label: '3PDT 腳踏開關',
+    type: 'signal',
+    description: 'True Bypass 關鍵元件。9腳開關，負責切換「效果音」與「原音直通 (Bypass)」，並控制 LED 亮滅。',
+    circuitDetails: 'Row 1: Input Switch, Row 2: Output Switch, Row 3: LED Power Switch.'
+  },
+  'output-jack': {
+    id: 'output-jack',
+    label: '音箱輸出 Output Jack',
+    type: 'signal',
+    description: '將處理後的訊號傳送至吉他音箱或錄音介面。',
+    circuitDetails: '6.3mm TS Jack。'
+  },
+  'vr-gain': {
+    id: 'vr-gain',
+    label: 'VR 增益旋鈕',
+    type: 'ui',
+    description: '控制 Fuzz 的破音程度 (Gain / Drive)。',
+    circuitDetails: '通常串接在電晶體的 Emitter 端或 Input 端，改變回授或輸入阻抗。'
+  },
+  'ldr': {
+    id: 'ldr',
+    label: 'LDR 光敏電阻/紅外線',
+    type: 'ui',
+    description: '非接觸式控制核心。隨著光線強弱改變電阻值，進而改變 Bias 或 Feedback，產生混亂 (Chaos) 的音效。',
+    circuitDetails: '阻值範圍：光亮時幾百歐姆 -> 黑暗時幾百 K 歐姆。'
+  },
+  'vr-bias': {
+    id: 'vr-bias',
+    label: 'VR 偏壓旋鈕',
+    type: 'ui',
+    description: '控制電晶體的工作點 (Bias)。調整此鈕可以從「正常 Fuzz」變為「電池沒電的破碎聲 (Gated Fuzz)」。',
+    circuitDetails: '連接在 Collector 或 Base 端，改變靜態工作電壓。'
+  },
+  'led': {
+    id: 'led',
+    label: 'LED 狀態指示燈',
+    type: 'ui',
+    description: '顯示效果器是否處於啟動狀態 (Effect On)。',
+    circuitDetails: '需串聯限流電阻 (CLR, 如 2.2k - 4.7k) 以免燒毀。'
+  },
+  '9v-dc': {
+    id: '9v-dc',
+    label: '9V DC 電源輸入',
+    type: 'power',
+    description: '標準效果器電源輸入。中心負極 (Center Negative)。',
+    circuitDetails: '需注意極性保護 (防呆二極體)。'
+  },
+  'rc-filter': {
+    id: 'rc-filter',
+    label: 'RC 電源濾波網路',
+    type: 'power',
+    description: '濾除電源雜訊 (Hum)，確保音訊純淨。',
+    circuitDetails: '由電阻 (R) 與電解電容 (C) 組成。C 通常選 47uF - 100uF。'
+  },
+  'grounding': {
+    id: 'grounding',
+    label: '單點接地 & 屏蔽',
+    type: 'power',
+    description: 'EMC 重點。所有接地點彙整至一點 (Star Grounding) 以避免接地迴路 (Ground Loop) 噪音。金屬罐頭作為法拉第籠屏蔽外界干擾。',
+    circuitDetails: 'Input Jack Sleeve 通常作為星狀接地中心。'
+  }
+};
 
 export const SYSTEM_CONTEXT_PROMPT = `
 You are a highly intelligent system administrator assistant integrated into the dashboard of a specific computing environment.
